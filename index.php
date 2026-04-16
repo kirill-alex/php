@@ -8,17 +8,18 @@
 <body>
 
 <header>
-  <img src="https://mospolytech.ru/upload/iblock/c3c/logo.png" alt="МосПолитех" />
+  <img src="img/Logo.jpg" alt="МосПолитех" />
   <h1>Самостоятельная работа «Hello, World!»</h1>
 </header>
 
 <main>
   <?php
-    $greeting = 'Hello, World!';
-    $time     = date('H:i:s');
-    $date     = date('d.m.Y');
+    date_default_timezone_set('Europe/Moscow');
+    $greeting = 'Hello, World!'; // переменные
+    $time     = date('H:i:s'); // время с сервера
+    $date     = date('d.m.Y'); // дата с сервера
 
-    if (date('H') < 12) {
+    if (date('H') < 12) { // H - возращает час
       $wish = 'Доброе утро!';
     } elseif (date('H') < 18) {
       $wish = 'Добрый день!';
@@ -27,7 +28,7 @@
     }
   ?>
 
-  <h2><?php echo $greeting; ?></h2>
+  <h2><?php echo $greeting; ?></h2> 
 
   <p>Сегодня: <strong><?php echo $date; ?></strong></p>
   <p>Время на сервере: <strong><?php echo $time; ?></strong></p>
@@ -35,8 +36,8 @@
 </main>
 
 <footer>
-  <p>Задание: Самостоятельная работа «Hello, World!»</p>
-  <p><a href="https://github.com/kirill-alex/php.git  ">github.com/kirill-alex/php.git  </a></p>
+  <p>Задание для самостоятельной работы</p>
+  <p><a href="https://github.com/kirill-alex/php.git  ">github.com/kirill-alex/php.git</a></p>
 </footer>
 
 </body>
