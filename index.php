@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo '<div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin-bottom: 20px; border-radius: 4px;">';
+    echo '<strong>✓ Спасибо, ' . htmlspecialchars($_POST['name']) . '!</strong> Ваше обращение отправлено.';
+    echo '</div>';
+}
+?><!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -8,12 +14,12 @@
 <body>
 
 <header>
-  <img src="img/logo.png" alt="МосПолитех" />
+  <img src="img/logo.jpg" alt="МосПолитех" />
   <h1>Самостоятельная работа «Feedback Form»</h1>
 </header>
 
 <main>
-  <form action="https://httpbin.org/post" method="POST">
+  <form action="page2.php" method="POST">
 
     <label for="name">Имя пользователя</label>
     <input type="text" id="name" name="name" required />
