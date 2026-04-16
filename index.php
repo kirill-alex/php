@@ -37,7 +37,8 @@
 
 <footer>
   <p>Задание для самостоятельной работы</p>
-  <p><a href="https://github.com/kirill-alex/php.git  ">github.com/kirill-alex/php.git</a></p>
+  <p><a href="https://github.com/kirill-alex/php.git  ">Github</a></p>
+  <p><a href="https://alexeev.wuaze.com/lab1/  ">Хостинг</a></p>
 </footer>
 
 </body>
