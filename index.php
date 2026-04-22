@@ -49,27 +49,26 @@
     <button class="equals" onclick="calculate()">=</button>
   </div>
 </div>
-
 <script>
   const display = document.getElementById('display');
   const resultDisplay = document.getElementById('result-display');
-
+ 
   // Восстанавливаем выражение из GET после редиректа
   <?php if ($displayExpr): ?>
   display.value = <?= json_encode($displayExpr) ?>;
   <?php endif; ?>
-
+ 
   function press(char) {
     display.value += char;
   }
-
+ 
   function clearDisplay() {
     display.value = '';
     resultDisplay.value = '';
     // убираем GET-параметры из URL без перезагрузки
     history.replaceState(null, '', window.location.pathname);
   }
-
+ 
   function calculate() {
     const expr = display.value.trim();
     if (!expr) return;
@@ -77,5 +76,8 @@
     document.getElementById('calc-form').submit();
   }
 </script>
+
+<p><a href="https://github.com/kirill-alex/php.git">Github</a></p>
+  <p><a href="https://alexeev.wuaze.com/lab4/">Хостинг</a></p>
 </body>
 </html>
