@@ -1,10 +1,4 @@
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo '<div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin-bottom: 20px; border-radius: 4px;">';
-    echo '<strong>✓ Спасибо, ' . htmlspecialchars($_POST['name']) . '!</strong> Ваше обращение отправлено.';
-    echo '</div>';
-}
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -19,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </header>
 
 <main>
-  <form action="page2.php" method="POST">
+  <form action="https://httpbin.org/post" method="POST">
 
     <label for="name">Имя пользователя</label>
     <input type="text" id="name" name="name" required />
@@ -52,6 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <footer>
   <p>Задание: Самостоятельная работа «Feedback Form»</p>
+  <p><a href="https://github.com/kirill-alex/php.git">Github</a></p>
+  <p><a href="https://alexeev.wuaze.com/lab2/">Хостинг</a></p>
 </footer>
 
 </body>
