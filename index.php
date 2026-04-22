@@ -48,6 +48,7 @@ echo "<p>Проверка: " . $result . " / " . $B . " = " . $check . " — " .
 
 ?>
 
-
+  <p><a href="https://github.com/kirill-alex/php.git">Github</a></p>
+  <p><a href="https://alexeev.wuaze.com/lab3/">Хостинг</a></p>
 </body>
 </html>
