@@ -48,5 +48,6 @@ echo "<p>Проверка: " . $result . " / " . $B . " = " . $check . " — " .
 
 ?>
 
+
 </body>
 </html>
