@@ -30,19 +30,12 @@ $result = match($operator) {
     "/" => $C * $B,
 };
 
-$solution_formula = match($operator) {
-    "+" => "X = $C - $B",
-    "-" => "X = $C + $B",
-    "*" => "X = $C / $B",
-    "/" => "X = $C * $B",
-};
 
 $check      = $result / $B;
 $is_correct = ($check == $C);
 
 echo "<p>Оператор: " . $operator . " (" . $operator_name . ")</p>";
 echo "<p>Расположение X: слева от оператора</p>";
-echo "<p>Формула: " . $solution_formula . "</p>";
 echo "<p><strong>X = " . $result . "</strong></p>";
 echo "<p>Проверка: " . $result . " / " . $B . " = " . $check . " — " . ($is_correct ? "верно" : "ошибка") . "</p>";
 
