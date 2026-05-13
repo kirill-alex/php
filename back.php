@@ -1,29 +1,15 @@
 <?php
 // ──────────────────────────────────────────────────────────────────
 // back.php — бэкенд калькулятора
-//
-// Подключает trig.php с тригонометрическими функциями (символическая ссылка).
-// При старте читает выражение из Task/expression.txt и передаёт его
-// во фронтенд как начальное значение поля ввода.
 // ──────────────────────────────────────────────────────────────────
 
-// Подключение файла с тригонометрическими функциями
 require_once __DIR__ . '/trig.php';
 
-// ──────────────────────────────────────────────────────────────────
-// Чтение выражения из файла Task/expression.txt
-// Файл расположен в корневом каталоге внутри папки Task.
-// ──────────────────────────────────────────────────────────────────
+// Читаем выражение из файла Task/expression.txt
 $exprFilePath = __DIR__ . '/Task/expression.txt';
-$fileExpression = null;
+$fileExpression = file_exists($exprFilePath) ? trim(file_get_contents($exprFilePath)) : null;
 
-if (file_exists($exprFilePath)) {
-    $fileExpression = trim(file_get_contents($exprFilePath));
-}
-
-// ──────────────────────────────────────────────────────────────────
-// Обработка POST-запроса
-// ──────────────────────────────────────────────────────────────────
+// ── Обработка POST ────────────────────────────────────────────────
 
 $result = null;
 $error = null;
@@ -45,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['expression'])) {
                 if ($pos !== count($tokens)) {
                     throw new Exception('Лишние символы в выражении');
                 }
+                // Форматирование результата
                 if (is_float($result) && $result == (int) $result && abs($result) < 1e15) {
                     $result = (int) $result;
                 } elseif (is_float($result)) {
@@ -64,12 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['expression'])) {
     exit;
 }
 
-// ──────────────────────────────────────────────────────────────────
-// Токенизатор
-// Поддерживает: цифры, операторы, скобки, имена функций, константы
-// Функции: sin, cos, tan, asin, acos, atan, ln, log, sqrt, cbrt, abs, fact
-// Константы: pi, e
-// ──────────────────────────────────────────────────────────────────
+// ── Токенизатор ───────────────────────────────────────────────────
 
 function tokenize(string $expr): array|false
 {
@@ -83,6 +65,7 @@ function tokenize(string $expr): array|false
             continue;
         }
 
+        // Числа
         if (ctype_digit($expr[$i]) || $expr[$i] === '.') {
             $num = '';
             while ($i < $len && (ctype_digit($expr[$i]) || $expr[$i] === '.')) {
@@ -92,33 +75,20 @@ function tokenize(string $expr): array|false
             continue;
         }
 
+        // Идентификаторы: функции и константы
         if (ctype_alpha($expr[$i]) || $expr[$i] === '_') {
             $word = '';
             while ($i < $len && (ctype_alnum($expr[$i]) || $expr[$i] === '_')) {
                 $word .= $expr[$i++];
             }
-            $known = [
-                'sin',
-                'cos',
-                'tan',
-                'asin',
-                'acos',
-                'atan',
-                'ln',
-                'log',
-                'sqrt',
-                'cbrt',
-                'abs',
-                'fact',
-                'pi',
-                'e'
-            ];
+            $known = ['sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'ln', 'log', 'sqrt', 'cbrt', 'abs', 'fact', 'pi', 'e'];
             if (!in_array($word, $known))
                 return false;
             $tokens[] = $word;
             continue;
         }
 
+        // Операторы и скобки
         if (in_array($expr[$i], ['+', '-', '*', '/', '(', ')', '^', '%'])) {
             $tokens[] = $expr[$i++];
             continue;
@@ -130,15 +100,13 @@ function tokenize(string $expr): array|false
     return $tokens;
 }
 
-// ──────────────────────────────────────────────────────────────────
-// Рекурсивный парсер (LL-грамматика)
+// ── Рекурсивный парсер (LL-грамматика) ───────────────────────────
 //
 // Expr   = Term   { ('+' | '-') Term }
 // Term   = Power  { ('*' | '/' | '%') Power }
 // Power  = Unary  { '^' Unary }
 // Unary  = '-' Unary | Factor
 // Factor = Function '(' Expr ')' | Constant | Number | '(' Expr ')'
-// ──────────────────────────────────────────────────────────────────
 
 function parseExpr(array &$t, int &$p): float
 {
@@ -171,8 +139,7 @@ function parsePower(array &$t, int &$p): float
     $base = parseUnary($t, $p);
     if ($p < count($t) && $t[$p] === '^') {
         $p++;
-        $exp = parseUnary($t, $p);
-        return power($base, $exp);
+        return power($base, parseUnary($t, $p));
     }
     return $base;
 }
@@ -197,8 +164,7 @@ function parseFactor(array &$t, int &$p): float
 
     $tok = $t[$p];
 
-    // Тригонометрические функции — вызов через обёртки из trig.php
-    // (там внутри используется символическая ссылка call_user_func)
+    // Все поддерживаемые функции
     $trigFuncs = ['sin', 'cos', 'tan', 'asin', 'acos', 'atan'];
     $otherFuncs = ['ln', 'log', 'sqrt', 'cbrt', 'abs', 'fact'];
     $allFuncs = array_merge($trigFuncs, $otherFuncs);
@@ -206,17 +172,19 @@ function parseFactor(array &$t, int &$p): float
     if (in_array($tok, $allFuncs)) {
         $p++;
         if ($p >= count($t) || $t[$p] !== '(')
-            throw new Exception("После «{$tok}» ожидается «(»");
+            throw new Exception("После «$tok» ожидается «(»");
         $p++;
         $arg = parseExpr($t, $p);
         if ($p >= count($t) || $t[$p] !== ')')
             throw new Exception('Отсутствует закрывающая скобка');
         $p++;
 
+        // Тригонометрия — через callTrig() из trig.php (там символическая ссылка)
         if (in_array($tok, $trigFuncs)) {
             return callTrig($tok, $arg);
         }
 
+        // Остальные функции — через символическую ссылку: calc + Sin/Cos/...
         return call_user_func('calc' . ucfirst($tok), $arg);
     }
 
@@ -243,12 +211,10 @@ function parseFactor(array &$t, int &$p): float
         return $val;
     }
 
-    throw new Exception("Неожиданный токен: «{$tok}»");
+    throw new Exception("Неожиданный токен: «$tok»");
 }
 
-// ──────────────────────────────────────────────────────────────────
-// Пользовательские арифметические функции
-// ──────────────────────────────────────────────────────────────────
+// ── Арифметические функции ────────────────────────────────────────
 
 function add(float $a, float $b): float
 {
@@ -281,9 +247,7 @@ function power(float $base, float $exp): float
     return pow($base, $exp);
 }
 
-// ──────────────────────────────────────────────────────────────────
-// Прочие математические функции (не тригонометрия)
-// ──────────────────────────────────────────────────────────────────
+// ── Математические функции (вызываются через call_user_func) ──────
 
 function calcLn(float $x): float
 {
@@ -323,9 +287,7 @@ function calcFact(float $x): float
     return $r;
 }
 
-// ──────────────────────────────────────────────────────────────────
-// GET-параметры для отображения
-// ──────────────────────────────────────────────────────────────────
+// ── GET-параметры для фронтенда ───────────────────────────────────
 
 $displayResult = isset($_GET['result']) ? htmlspecialchars($_GET['result']) : null;
 $displayExpr = isset($_GET['expr']) ? htmlspecialchars($_GET['expr']) : null;

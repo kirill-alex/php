@@ -16,6 +16,7 @@
 <body>
     <div class="calc-wrap">
         <div class="calc">
+
             <div class="display-area">
                 <?php if ($fileExpression): ?>
                     <div class="file-expr">
