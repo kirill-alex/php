@@ -85,7 +85,7 @@
 
         <div class="links">
             <a href="https://github.com/kirill-alex/php.git">GitHub</a>
-            <a href="https://alexeev.wuaze.com/lab4/">Хостинг</a>
+            <a href="https://alexeev.wuaze.com/lab5/">Хостинг</a>
         </div>
     </div>
 

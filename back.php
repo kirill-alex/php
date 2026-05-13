@@ -172,7 +172,7 @@ function parseFactor(array &$t, int &$p): float
     if (in_array($tok, $allFuncs)) {
         $p++;
         if ($p >= count($t) || $t[$p] !== '(')
-            throw new Exception("После «$tok» ожидается «(»");
+            throw new Exception("После $tok ожидается «(»");
         $p++;
         $arg = parseExpr($t, $p);
         if ($p >= count($t) || $t[$p] !== ')')
@@ -211,7 +211,7 @@ function parseFactor(array &$t, int &$p): float
         return $val;
     }
 
-    throw new Exception("Неожиданный токен: «$tok»");
+    throw new Exception("Неожиданный токен: $tok");
 }
 
 // ── Арифметические функции ────────────────────────────────────────
