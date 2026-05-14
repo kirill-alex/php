@@ -1,0 +1,44 @@
+<?php
+/**
+ * db.php — подключение к базе данных MySQL.
+ * Возвращает объект PDO через функцию getDB().
+ * Настройте параметры подключения под своё окружение.
+ */
+
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'phonebook');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_CHARSET', 'utf8mb4');
+
+function getDB(): PDO
+{
+    static $pdo = null;
+    if ($pdo === null) {
+        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+    }
+    return $pdo;
+}
+
+/*
+ * SQL для создания таблицы (выполните один раз):
+ *
+ * CREATE TABLE IF NOT EXISTS contacts (
+ *     id       INT AUTO_INCREMENT PRIMARY KEY,
+ *     surname  VARCHAR(100) NOT NULL,
+ *     name     VARCHAR(100) NOT NULL,
+ *     lastname VARCHAR(100),
+ *     gender   VARCHAR(10),
+ *     date     DATE,
+ *     phone    VARCHAR(30),
+ *     location VARCHAR(255),
+ *     email    VARCHAR(150),
+ *     comment  TEXT
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ */
