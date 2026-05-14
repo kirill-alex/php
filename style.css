@@ -136,18 +136,11 @@ button {
 }
 
 button:active {
-  transform: scale(0.93);
+  background-color: red;
 }
 
-button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0);
-  transition: background .15s;
-}
 
-button:hover::after {
+button:hover {
   background: rgba(255, 255, 255, .04);
 }
 
@@ -156,14 +149,20 @@ button.op {
   color: var(--accent2);
 }
 
+
+button.op:hover {
+  background: rgba(255, 255, 255, .04);
+}
+
+
 button.fn {
   background: var(--fn-bg);
   color: #94a3b8;
   font-size: 12px;
 }
 
-button.fn:hover::after {
-  background: rgba(120, 100, 247, .15);
+button.fn:hover {
+  background: rgba(230, 221, 221, 0.089);
 }
 
 button.clear {
@@ -180,11 +179,11 @@ button.equals {
   background: var(--eq-bg);
   color: #fff;
   font-size: 20px;
-  grid-column: span 2;
+  grid-column: span 5;
 }
 
-button.equals:hover::after {
-  background: rgba(255, 255, 255, .12);
+button.equals:hover {
+  background: rgba(255, 255, 255, 0.473);
 }
 
 button.zero {

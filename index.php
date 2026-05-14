@@ -69,7 +69,8 @@
                 <!-- Row 7 -->
                 <button class="zero" onclick="press('0')">0</button>
                 <button onclick="press('.')">.</button>
-                <button class="op" onclick="press('(-')">(-</button>
+                <button class="op" onclick="press('(')">(</button>
+                <button class="op" onclick="press(')')">)</button>
                 <button class="equals" onclick="calculate()">=</button>
             </div>
 
