@@ -18,13 +18,6 @@
         <div class="calc">
 
             <div class="display-area">
-                <?php if ($fileExpression): ?>
-                    <div class="file-expr">
-                        <span>📄 Task/expression.txt:</span>
-                        <code style="color:var(--accent2)"><?= htmlspecialchars($fileExpression) ?></code>
-                        <button class="load-btn" onclick="loadFromFile()">Загрузить</button>
-                    </div>
-                <?php endif; ?>
                 <div id="expr-line"></div>
                 <input type="text" id="display" placeholder="0" autocomplete="off" spellcheck="false"
                     style="<?= $displayError ? 'color:#ef4444' : '' ?>" />
@@ -131,15 +124,6 @@
             document.getElementById('calc-form').submit();
         }
 
-        // Загрузить выражение из файла в поле ввода
-        function loadFromFile() {
-            const fileExpr = <?= json_encode($fileExpression ?? '') ?>;
-            display.value = fileExpr;
-            resultDisp.value = '';
-            display.classList.remove('error');
-            updateExprLine();
-        }
-
         // Поддержка ввода с клавиатуры
         document.addEventListener('keydown', e => {
             if (e.key >= '0' && e.key <= '9') { press(e.key); return; }
@@ -148,7 +132,6 @@
             if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); calculate(); return; }
             if (e.key === 'Backspace') { e.preventDefault(); deleteLast(); return; }
             if (e.key === 'Escape') { clearDisplay(); return; }
-            // Быстрые клавиши для функций
             if (e.key === 'p') { press('pi'); return; }
             if (e.key === 'e' && !e.ctrlKey) { press('e'); return; }
             if (e.key === 's') { press('sin('); return; }
