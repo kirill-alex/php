@@ -1,7 +1,4 @@
 <?php
-// ──────────────────────────────────────────────────────────────────
-// back.php — бэкенд калькулятора (без trig.php)
-// ──────────────────────────────────────────────────────────────────
 
 $fileExpression = null;
 
@@ -88,7 +85,7 @@ function tokenize(string $expr): array|false
     return $tokens;
 }
 
-// ── Рекурсивный парсер (LL-грамматика) ───────────────────────────
+// ── Рекурсивный парсер  ───────────────────────────
 
 function parseExpr(array &$t, int &$p): float
 {
@@ -171,7 +168,7 @@ function parseFactor(array &$t, int &$p): float
     throw new Exception("Неожиданный токен: $tok");
 }
 
-// ── Арифметические функции ────────────────────────────────────────
+// ── Арифметические функции(по заданию) ────────────────────────────────────────
 
 function add(float $a, float $b): float      { return $a + $b; }
 function subtract(float $a, float $b): float { return $a - $b; }
