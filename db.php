@@ -1,9 +1,4 @@
 <?php
-/**
- * db.php — подключение к базе данных MySQL.
- * Возвращает объект PDO через функцию getDB().
- * Настройте параметры подключения под своё окружение.
- */
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'phonebook');
@@ -25,20 +20,3 @@ function getDB(): PDO
     }
     return $pdo;
 }
-
-/*
- * SQL для создания таблицы (выполните один раз):
- *
- * CREATE TABLE IF NOT EXISTS contacts (
- *     id       INT AUTO_INCREMENT PRIMARY KEY,
- *     surname  VARCHAR(100) NOT NULL,
- *     name     VARCHAR(100) NOT NULL,
- *     lastname VARCHAR(100),
- *     gender   VARCHAR(10),
- *     date     DATE,
- *     phone    VARCHAR(30),
- *     location VARCHAR(255),
- *     email    VARCHAR(150),
- *     comment  TEXT
- * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
- */
