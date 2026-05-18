@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $title ?? 'Мой блог' ?></title>
-    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/php/styles/styles.css">
 </head>
 <body>
 

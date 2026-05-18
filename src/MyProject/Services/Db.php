@@ -29,4 +29,10 @@ class Db
 
         return $sth->fetchAll(\PDO::FETCH_CLASS, $className);
     }
+
+    public function execute(string $sql, array $params = []): bool
+    {
+        $sth = $this->pdo->prepare($sql);
+        return $sth->execute($params);
+    }
 }
