@@ -3,6 +3,7 @@
 namespace MyProject\Controllers;
 
 use MyProject\Models\Articles\Article;
+use MyProject\Models\Comments\Comment;
 use MyProject\Models\Users\User;
 use MyProject\Services\Db;
 use MyProject\View\View;
@@ -20,7 +21,6 @@ class ArticlesController
 
     public function show(int $articleId): void
     {
-        // Получаем статью по id
         $result = $this->db->query(
             'SELECT * FROM `articles` WHERE id = :id;',
             [':id' => $articleId],
@@ -34,7 +34,6 @@ class ArticlesController
 
         $article = $result[0];
 
-        // Получаем автора статьи по author_id
         $authorResult = $this->db->query(
             'SELECT * FROM `users` WHERE id = :id;',
             [':id' => $article->getAuthorId()],
@@ -43,9 +42,31 @@ class ArticlesController
 
         $author = $authorResult[0] ?? null;
 
+        $comments = $this->db->query(
+            'SELECT * FROM `comments` WHERE article_id = :article_id ORDER BY created_at ASC;',
+            [':article_id' => $articleId],
+            Comment::class
+        ) ?? [];
+
+        // Получаем авторов комментариев
+        $commentAuthors = [];
+        foreach ($comments as $comment) {
+            $authorId = $comment->getAuthorId();
+            if (!isset($commentAuthors[$authorId])) {
+                $userResult = $this->db->query(
+                    'SELECT * FROM `users` WHERE id = :id;',
+                    [':id' => $authorId],
+                    User::class
+                );
+                $commentAuthors[$authorId] = $userResult[0] ?? null;
+            }
+        }
+
         $this->view->renderHtml('articles/view.php', [
-            'article' => $article,
-            'author'  => $author,
+            'article'        => $article,
+            'author'         => $author,
+            'comments'       => $comments,
+            'commentAuthors' => $commentAuthors,
         ]);
     }
 }

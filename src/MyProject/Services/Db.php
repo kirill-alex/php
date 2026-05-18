@@ -35,4 +35,9 @@ class Db
         $sth = $this->pdo->prepare($sql);
         return $sth->execute($params);
     }
+
+    public function getLastInsertId(): int
+    {
+        return (int) $this->pdo->lastInsertId();
+    }
 }
